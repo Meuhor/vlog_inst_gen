@@ -52,7 +52,8 @@ if exists('b:vlog_inst_gen') || &cp || version < 700
 endif
 let b:vlog_inst_gen = 1
 
-
+let b:Instance_suffix = '_Inst_0'
+let b:Instance_prefix = ''
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -620,7 +621,8 @@ fun! <SID>Inst_Part_Format(module_num, module_name, para_list, port_list)
         "parameter process
         if empty(a:para_list[i])    "has no parameter
             let has_para_flag = 0
-            let inst = inst.a:module_name[i]." U_".toupper(a:module_name[i])."_0(\n"
+            " let inst = inst.a:module_name[i]." U_".toupper(a:module_name[i])."_0(\n"
+			let inst = inst.a:module_name[i] . " " . b:Instance_prefix . toupper(a:module_name[i]) . b:Instance_suffix . "(\n"
         else                        "has parameters
             let has_para_flag = 1
             let inst = inst.a:module_name[i]." #(\n"
@@ -650,7 +652,8 @@ fun! <SID>Inst_Part_Format(module_num, module_name, para_list, port_list)
         endif
         "port process
         if has_para_flag == 1           "has parameter
-            let inst = inst."U_".toupper(a:module_name[i])."_0(\n"
+            " let inst = inst."U_".toupper(a:module_name[i])."_0(\n"
+            let inst = inst . b:Instance_prefix . toupper(a:module_name[i]) . b:Instance_suffix . "(\n"
         endif
         if empty(a:port_list[i]) == 0   "has port
             let list_len = len(a:port_list[i])
